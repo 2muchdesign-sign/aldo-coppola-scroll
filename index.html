@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Aldo Coppola — история в скролле</title>
+<meta name="description" content="Концепт-прототип: логотип Aldo Coppola рассказывает историю бренда при прокрутке страницы.">
+<link rel="icon" href="media/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Manrope:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#C8102E; --ink:#2E2E30; --grey:#77777C; --line:#DCDCDF; --paper:#F4F4F5; --white:#FFFFFF;
+  --sans:"Manrope",system-ui,-apple-system,sans-serif; --serif:"Cormorant Garamond",Georgia,serif;
+  --d:min(44vh,38vw);
+}
+@media (max-width:767px){:root{--d:min(64vw,34vh)}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+em{font-family:var(--serif);font-style:italic;font-weight:500;text-transform:none;letter-spacing:0}
+
+/* ---------- верхняя панель ---------- */
+.nav{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(16px,3vw,40px);transition:color .4s}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.08em;font-size:14px;text-decoration:none}
+.brand img{width:34px;height:34px}
+.nav ul{display:flex;gap:clamp(12px,2vw,28px);list-style:none;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.nav ul a{text-decoration:none;opacity:.7}.nav ul a:hover{opacity:1}
+body.on-red .nav{color:var(--white)}
+body.on-red .brand img{filter:brightness(0) invert(1)}
+@media (max-width:767px){.nav ul li:not(:last-child){display:none}}
+.progress{position:fixed;right:0;top:0;width:3px;height:100vh;z-index:21;background:rgba(0,0,0,.06)}
+.progress i{display:block;width:100%;height:0;background:var(--red)}
+body.on-red .progress i{background:var(--white)}
+
+/* ---------- сцена с логотипом ---------- */
+.stage{position:fixed;inset:0;z-index:10;pointer-events:none;display:grid;place-items:center;perspective:1600px}
+.coin-pos{will-change:transform;transform-style:preserve-3d}
+.coin{position:relative;width:var(--d);height:var(--d);transform-style:preserve-3d}
+.coin .face,.coin .edge{position:absolute;inset:0;border-radius:50%}
+.coin .front{background:var(--white) url(media/logo.png) center/86% no-repeat;transform:translateZ(calc(var(--d)*.035));backface-visibility:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
+.coin .back{background:var(--red);transform:rotateY(180deg) translateZ(calc(var(--d)*.035));backface-visibility:hidden;display:grid;place-items:center}
+.coin .back img{width:86%;filter:brightness(0) invert(1)}
+.coin .edge{background:#E3E3E6}
+.coin .edge:nth-child(odd){background:#D9D9DC}
+
+/* ---------- секции ---------- */
+section{position:relative;min-height:100vh}
+.kf{position:absolute;left:0;width:1px;height:1px;visibility:hidden}
+.wrap{width:min(1240px,100% - 32px);margin-inline:auto}
+.label{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
+.label b{color:var(--red);font-weight:600}
+h1,h2{font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:.92}
+p.lead{font-size:clamp(16px,1.35vw,19px);line-height:1.55;max-width:34ch}
+
+/* интро-чертёж */
+.intro{height:260vh}
+.intro .sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;place-items:center}
+.intro .grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;background-position:center;mask-image:radial-gradient(circle at center,#000 20%,transparent 75%);-webkit-mask-image:radial-gradient(circle at center,#000 20%,transparent 75%)}
+.blueprint{position:relative;width:var(--d);height:var(--d);overflow:visible}
+.blueprint .cons{stroke:#BDBDC2;stroke-width:.35;stroke-dasharray:2 2}
+.blueprint .ring{fill:none;stroke:var(--red);stroke-width:.8}
+.blueprint .h line{stroke:var(--red);stroke-width:.6}
+.blueprint .h circle{fill:var(--paper);stroke:var(--red);stroke-width:.6}
+.intro .tl,.intro .bl,.intro .br{position:absolute}
+.intro .tl{top:90px;left:clamp(16px,3vw,40px)}
+.intro .bl{bottom:32px;left:clamp(16px,3vw,40px);max-width:300px}
+.intro .bl h2{font-size:clamp(22px,2.4vw,34px);margin-bottom:10px}
+.intro .br{bottom:32px;right:clamp(16px,3vw,40px);text-align:right}
+.hint{display:inline-flex;align-items:center;gap:8px}
+.hint::after{content:"";width:1px;height:28px;background:var(--red);animation:drip 1.6s ease-in-out infinite;transform-origin:top}
+@keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* герой */
+.hero{display:flex;flex-direction:column;justify-content:space-between;padding:110px 0 40px}
+.hero h1{font-size:clamp(54px,12.5vw,210px)}
+.hero h1 span{color:var(--red)}
+.hero .row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.hero .row p{max-width:28ch;font-size:15px;line-height:1.55}
+@media (max-width:767px){.hero .row{flex-direction:column;align-items:flex-start}}
+
+/* не просто логотип */
+.split{display:flex;align-items:center}
+.split .wrap{display:grid;grid-template-columns:1fr calc(var(--d)*.8) 1fr;align-items:center;gap:32px}
+.split .wrap p{grid-column:3;justify-self:end}
+.split h2{font-size:clamp(34px,4.4vw,68px)}
+@media (max-width:767px){.split .wrap{display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;min-height:100vh;padding:110px 0 48px;gap:0}}
+
+/* фичи */
+.feat{display:flex;align-items:center}
+.feat .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.feat .txt{max-width:460px}
+.feat.r .txt{grid-column:2}
+.feat .num{font-size:12px;font-weight:600;letter-spacing:.14em;color:var(--red);margin-bottom:18px}
+.feat h2{font-size:clamp(32px,3.8vw,58px);margin-bottom:22px}
+.feat .tag{display:inline-block;margin-top:26px;padding:8px 14px;border:1px solid var(--red);color:var(--red);border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+@media (max-width:767px){.feat{align-items:flex-end}.feat .wrap{grid-template-columns:1fr;padding:56vh 0 56px}.feat.r .txt{grid-column:1}}
+
+/* цифры */
+.stats{display:flex;align-items:center;padding:120px 0}
+.stats h2{font-size:clamp(30px,3.4vw,52px);margin-bottom:56px;max-width:16ch}
+.stats .cells{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+.stats .cell{padding:28px 24px 0 0;border-right:1px solid var(--line);margin-right:24px}
+.stats .cell:last-child{border-right:0}
+.stats .big{font-size:clamp(44px,6vw,104px);white-space:nowrap;font-weight:800;letter-spacing:-.04em;line-height:1;color:var(--red);font-variant-numeric:tabular-nums}
+.stats .cell p{margin-top:14px;font-size:14px;line-height:1.5;color:var(--grey);max-width:24ch}
+@media (max-width:767px){.stats .cells{grid-template-columns:1fr 1fr}.stats .cell{border-right:0;border-bottom:1px solid var(--line);padding-bottom:24px;margin:0}}
+
+/* выбор визита */
+.visit{padding:120px 0;display:flex;align-items:center}
+.visit h2{font-size:clamp(34px,4.4vw,68px);margin-bottom:12px}
+.visit .sub{color:var(--grey);margin-bottom:48px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{border:1px solid var(--line);border-radius:4px;padding:24px;background:var(--white);transition:border-color .3s}
+.card:hover{border-color:var(--red)}
+.card .stack{height:220px;display:grid;place-items:center;perspective:700px}
+.card .pile{position:relative;width:140px;height:140px;transform-style:preserve-3d;transform:rotateX(62deg) rotateZ(-20deg);transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.card:hover .pile{transform:rotateX(52deg) rotateZ(160deg)}
+.card .disc{position:absolute;inset:0;border-radius:50%;transform-style:preserve-3d}
+.card .disc::before,.card .disc::after{content:"";position:absolute;inset:0;border-radius:50%}
+.card .disc::before{background:#D9D9DC;transform:translateZ(-9px)}
+.card .disc::after{background:var(--white) url(media/logo.png) center/86% no-repeat;box-shadow:0 0 0 1px #E3E3E6}
+.card .disc:nth-child(2){transform:translateZ(12px)}
+.card .disc:nth-child(3){transform:translateZ(24px)}
+.card h3{font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:.02em;margin:8px 0 10px}
+.card p{font-size:14px;line-height:1.55;color:var(--grey)}
+@media (max-width:767px){.cards{grid-template-columns:1fr}}
+
+/* финал */
+.cta{color:var(--white);display:flex;align-items:flex-end;padding:0 0 64px}
+.cta .wrap{text-align:center;padding-top:calc(50vh + var(--d)*.25)}
+.cta h2{font-size:clamp(28px,3.8vw,58px);max-width:20ch;margin:0 auto 18px}
+.cta p{opacity:.85;margin-bottom:32px}
+.btn{display:inline-block;padding:16px 30px;border-radius:999px;background:var(--white);color:var(--red);font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;pointer-events:auto;transition:transform .3s}
+.btn:hover{transform:translateY(-2px)}
+footer{background:var(--paper);padding:28px 0;font-size:12px;color:var(--grey);position:relative;z-index:11}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* появление текста */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a class="brand" href="#top"><img src="media/logo.png" alt="">ALDO COPPOLA</a>
+  <nav><ul>
+    <li><a href="#top">Интро</a></li>
+    <li><a href="#details">Детали</a></li>
+    <li><a href="#visit">Визит</a></li>
+    <li><a href="#contact">Запись</a></li>
+  </ul></nav>
+</header>
+<div class="progress" aria-hidden="true"><i></i></div>
+
+<!-- Логотип-«монета», которым управляет скролл -->
+<div class="stage" aria-hidden="true">
+  <div class="coin-pos"><div class="coin" id="coin">
+    <!-- ребро монеты собирается скриптом -->
+    <div class="face back"><img src="media/logo.png" alt=""></div>
+    <div class="face front"></div>
+  </div></div>
+</div>
+
+<main id="top">
+
+  <!-- 0. Чертёж -->
+  <section class="intro" id="intro" data-bg="#F4F4F5">
+    <i class="kf" style="top:50vh"  data-kf='{"x":0,"y":0,"s":1,"rx":0,"ry":0,"rz":0,"op":0}'></i>
+    <i class="kf" style="top:130vh" data-kf='{"x":0,"y":0,"s":1,"rx":0,"ry":0,"rz":0,"op":0}'></i>
+    <i class="kf" style="top:190vh" data-kf='{"x":0,"y":0,"s":1,"rx":0,"ry":0,"rz":0,"op":1}'></i>
+    <div class="sticky">
+      <div class="grid" id="grid"></div>
+      <svg class="blueprint" id="bp" viewBox="0 0 200 200" aria-hidden="true">
+        <g class="cons" id="cons">
+          <line x1="-600" y1="100" x2="800" y2="100"/><line x1="100" y1="-600" x2="100" y2="800"/>
+          <line x1="-600" y1="4" x2="800" y2="4"/><line x1="-600" y1="196" x2="800" y2="196"/>
+          <line x1="4" y1="-600" x2="4" y2="800"/><line x1="196" y1="-600" x2="196" y2="800"/>
+        </g>
+        <circle class="ring" id="ring" cx="100" cy="100" r="96" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" transform="rotate(-90 100 100)"/>
+        <g class="h" id="handles">
+          <line x1="58" y1="4" x2="142" y2="4"/><circle cx="58" cy="4" r="2"/><circle cx="100" cy="4" r="2"/><circle cx="142" cy="4" r="2"/>
+          <line x1="58" y1="196" x2="142" y2="196"/><circle cx="58" cy="196" r="2"/><circle cx="100" cy="196" r="2"/><circle cx="142" cy="196" r="2"/>
+          <line x1="4" y1="58" x2="4" y2="142"/><circle cx="4" cy="58" r="2"/><circle cx="4" cy="100" r="2"/><circle cx="4" cy="142" r="2"/>
+          <line x1="196" y1="58" x2="196" y2="142"/><circle cx="196" cy="58" r="2"/><circle cx="196" cy="100" r="2"/><circle cx="196" cy="142" r="2"/>
+          <rect x="97" y="97" width="6" height="6" fill="none" stroke="#C8102E" stroke-width=".6"/>
+        </g>
+      </svg>
+      <div class="tl label">Чертёж № 1964 · <b>Милан</b></div>
+      <div class="bl" id="introTxt">
+        <h2>Создано для волос. <em>Придумано</em> в Милане.</h2>
+        <p class="label">Один мазок кисти — и форма держится годами.</p>
+      </div>
+      <div class="br label hint">Листайте</div>
+    </div>
+  </section>
+
+  <!-- 1. Герой -->
+  <section class="hero wrap" data-bg="#F4F4F5">
+    <i class="kf" style="top:55%" data-kf='{"x":0,"y":14,"s":0.8,"rx":60,"ry":0,"rz":-18,"op":1,"my":10}'></i>
+    <h1 class="reveal">Aldo<br><span>Coppola</span></h1>
+    <div class="row reveal">
+      <p class="label">Итальянские центры красоты<br>Милан — Москва · с 1996 года</p>
+      <p>Самый тщательно продуманный круг в мире красоты. Без циркуля — только рука мастера.</p>
+    </div>
+  </section>
+
+  <!-- 2. Не просто логотип -->
+  <section class="split" data-bg="#FFFFFF">
+    <i class="kf" style="top:50%" data-kf='{"x":0,"y":0,"s":0.72,"rx":0,"ry":360,"rz":0,"op":1,"ms":0.62}'></i>
+    <div class="wrap">
+      <h2 class="reveal">Не просто<br>логотип.</h2>
+      <p class="lead reveal">Это больше шестидесяти лет итальянской школы красоты, свёрнутые в&nbsp;один красный мазок.</p>
+    </div>
+  </section>
+
+  <!-- 3–6. Детали -->
+  <section class="feat r" id="details" data-bg="#FFFFFF">
+    <i class="kf" style="top:50%" data-kf='{"x":-24,"y":0,"s":0.86,"rx":18,"ry":330,"rz":-8,"op":1,"my":-22,"ms":0.62}'></i>
+    <div class="wrap"><div class="txt reveal">
+      <div class="num">01 / 04</div>
+      <h2>Поднимает над обыденным</h2>
+      <p class="lead">Shatush — авторская техника окрашивания, созданная и запатентованная Альдо Копполой. Свет ложится так, будто его подарило солнце, а не салон.</p>
+      <span class="tag">Техника Shatush</span>
+    </div></div>
+  </section>
+
+  <section class="feat" data-bg="#FFFFFF">
+    <i class="kf" style="top:50%" data-kf='{"x":24,"y":0,"s":0.86,"rx":-12,"ry":540,"rz":6,"op":1,"my":-22,"ms":0.62}'></i>
+    <div class="wrap"><div class="txt reveal">
+      <div class="num">02 / 04</div>
+      <h2>Цвет из <em>итальянских</em> трав</h2>
+      <p class="lead">Infusion Elements — система натурального окрашивания: пудра итальянских трав, пектин и витамин С. Шесть базовых оттенков — от блонда до насыщенного каштана.</p>
+      <span class="tag">Infusion Elements</span>
+    </div></div>
+  </section>
+
+  <section class="feat r" data-bg="#FFFFFF">
+    <i class="kf" style="top:50%" data-kf='{"x":-24,"y":0,"s":0.86,"rx":62,"ry":720,"rz":24,"op":1,"my":-22,"ms":0.62}'></i>
+    <div class="wrap"><div class="txt reveal">
+      <div class="num">03 / 04</div>
+      <h2>Идеально круглый. Почти.</h2>
+      <p class="lead">Кольцо нарисовано кистью, а не циркулем. Так и со стрижкой: естественная форма, которая не требует долгой укладки.</p>
+      <span class="tag">Естественная красота</span>
+    </div></div>
+  </section>
+
+  <section class="feat" data-bg="#FFFFFF">
+    <i class="kf" style="top:50%" data-kf='{"x":24,"y":0,"s":0.86,"rx":-8,"ry":1080,"rz":-14,"op":1,"my":-22,"ms":0.62}'></i>
+    <div class="wrap"><div class="txt reveal">
+      <div class="num">04 / 04</div>
+      <h2>Шесть услуг. Один визит.</h2>
+      <p class="lead">Стрижка, окрашивание, косметология, маникюр — до шести процедур выполняются параллельно. Время остаётся вам.</p>
+      <span class="tag">Параллельно</span>
+    </div></div>
+  </section>
+
+  <!-- 7. Цифры -->
+  <section class="stats" data-bg="#F4F4F5">
+    <i class="kf" style="top:50%" data-kf='{"x":0,"y":-70,"s":0.5,"rx":80,"ry":1260,"rz":0,"op":0}'></i>
+    <div class="wrap">
+      <h2 class="reveal">Проверено временем</h2>
+      <div class="cells reveal">
+        <div class="cell"><div class="big" data-count="1964">1964</div><p>Первый салон Альдо Копполы в&nbsp;Милане</p></div>
+        <div class="cell"><div class="big" data-count="1996">1996</div><p>Первый центр красоты в&nbsp;Москве</p></div>
+        <div class="cell"><div class="big" data-count="7">7</div><p>Центров в&nbsp;Москве и&nbsp;Подмосковье</p></div>
+        <div class="cell"><div class="big">10–22</div><p>Каждый день, без выходных</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Выбор визита -->
+  <section class="visit" id="visit" data-bg="#FFFFFF">
+    <i class="kf" style="top:50%" data-kf='{"x":0,"y":-70,"s":0.5,"rx":80,"ry":1260,"rz":0,"op":0}'></i>
+    <div class="wrap">
+      <h2 class="reveal">Выберите свой визит</h2>
+      <p class="sub reveal">Чем больше слоёв — тем выше результат. Наведите на карточку.</p>
+      <div class="cards reveal">
+        <article class="card"><div class="stack"><div class="pile"><div class="disc"></div></div></div>
+          <h3>Coppola</h3><p>Стрижка и укладка. Форма, которая держится сама.</p></article>
+        <article class="card"><div class="stack"><div class="pile"><div class="disc"></div><div class="disc"></div></div></div>
+          <h3>Coppola Pro</h3><p>Стрижка и окрашивание Shatush или Infusion Elements.</p></article>
+        <article class="card"><div class="stack"><div class="pile"><div class="disc"></div><div class="disc"></div><div class="disc"></div></div></div>
+          <h3>Coppola Pro Max</h3><p>Волосы, косметология и маникюр — параллельно, за один визит.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Финал -->
+  <section class="cta" id="contact" data-bg="#C8102E">
+    <i class="kf" style="top:calc(100% - 50vh)" data-kf='{"x":0,"y":-18,"s":0.62,"rx":0,"ry":1440,"rz":0,"op":1,"my":-20}'></i>
+    <div class="wrap">
+      <h2 class="reveal">Мы привлекли ваше внимание логотипом.</h2>
+      <p class="reveal">Представьте, что наши мастера сделают для вас.</p>
+      <a class="btn reveal" href="https://aldocoppola.ru/" target="_blank" rel="noopener">Записаться</a>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>© Aldo Coppola · Милан — Москва</span><span>Концепт-прототип страницы</span></div></footer>
+
+<script>
+(() => {
+  const coin = document.getElementById('coin');
+  const pos = coin.parentElement;
+  // ребро «монеты»: стопка тонких дисков между лицевыми сторонами
+  const N = 14;
+  for (let i = 0; i < N; i++) {
+    const e = document.createElement('div');
+    e.className = 'edge';
+    e.style.transform = `translateZ(calc(var(--d) * ${(-0.035 + 0.07 * i / (N - 1)).toFixed(4)}))`;
+    coin.insertBefore(e, coin.firstChild);
+  }
+
+  const mobile = matchMedia('(max-width:767px)');
+  const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const keys = ['x','y','s','rx','ry','rz','op'];
+  let frames = [];
+
+  const absTop = el => { let t = 0; while (el) { t += el.offsetTop; el = el.offsetParent; } return t; };
+  const hex = h => [1,3,5].map(i => parseInt(h.slice(i, i + 2), 16));
+
+  function build() {
+    const vh = innerHeight;
+    frames = [...document.querySelectorAll('.kf')].map(m => {
+      const d = JSON.parse(m.dataset.kf);
+      const sec = m.closest('section');
+      const f = { at: Math.max(0, absTop(m) - vh / 2), bg: hex(sec.dataset.bg) };
+      keys.forEach(k => f[k] = d[k]);
+      if (mobile.matches) { f.x = 0; if ('my' in d) f.y = d.my; if ('ms' in d) f.s = d.ms; }
+      return f;
+    });
+  }
+
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+
+  function target(y) {
+    if (y <= frames[0].at) return frames[0];
+    for (let i = 0; i < frames.length - 1; i++) {
+      const a = frames[i], b = frames[i + 1];
+      if (y <= b.at) {
+        const t = ease(clamp((y - a.at) / (b.at - a.at || 1)));
+        const o = { bg: a.bg.map((c, j) => lerp(c, b.bg[j], t)) };
+        keys.forEach(k => o[k] = lerp(a[k], b[k], t));
+        return o;
+      }
+    }
+    return frames[frames.length - 1];
+  }
+
+  // чертёж в интро
+  const intro = document.getElementById('intro');
+  const ring = document.getElementById('ring'), handles = document.getElementById('handles'),
+        cons = document.getElementById('cons'), bp = document.getElementById('bp'),
+        grid = document.getElementById('grid'), introTxt = document.getElementById('introTxt');
+  function blueprint(y) {
+    const p = clamp(y / (intro.offsetHeight - innerHeight));
+    ring.setAttribute('stroke-dashoffset', 1 - clamp(p / .5));
+    handles.style.opacity = clamp((p - .05) / .25) * (1 - clamp((p - .55) / .2));
+    cons.style.opacity = 1 - clamp((p - .45) / .3);
+    bp.style.opacity = 1 - clamp((p - .7) / .2);
+    grid.style.opacity = 1 - clamp((p - .6) / .35);
+    introTxt.style.opacity = clamp((p - .55) / .2);
+  }
+
+  const bar = document.querySelector('.progress i');
+  const cur = {};
+  let first = true;
+  function tick() {
+    const y = scrollY;
+    const t = target(y);
+    const k = first || reduce ? 1 : .1;
+    keys.forEach(key => cur[key] = cur[key] === undefined ? t[key] : lerp(cur[key], t[key], k));
+    first = false;
+    pos.style.transform =
+      `translate3d(${cur.x}vw, ${cur.y}vh, 0) scale(${cur.s}) rotateX(${cur.rx}deg) rotateY(${cur.ry}deg) rotateZ(${cur.rz}deg)`;
+    pos.style.opacity = cur.op;
+    if (t.bg) document.body.style.background = `rgb(${t.bg.map(Math.round).join(',')})`;
+    blueprint(y);
+    bar.style.height = (y / (document.documentElement.scrollHeight - innerHeight) * 100) + '%';
+    requestAnimationFrame(tick);
+  }
+
+  // появление текста и счётчики
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    e.target.querySelectorAll('[data-count]').forEach(n => {
+      const to = +n.dataset.count, from = to > 100 ? to - 60 : 0, t0 = performance.now();
+      const step = now => { const p = clamp((now - t0) / 1400); n.textContent = Math.round(lerp(from, to, ease(p))); if (p < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    });
+    io.unobserve(e.target);
+  }), { threshold: .25 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // светлая шапка на красном финале
+  new IntersectionObserver(([e]) => document.body.classList.toggle('on-red', e.intersectionRatio > .5), { threshold: [0, .5, 1] })
+    .observe(document.getElementById('contact'));
+
+  build();
+  addEventListener('resize', build);
+  addEventListener('load', build);
+  mobile.addEventListener('change', build);
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
